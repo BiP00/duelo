@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Duelo</title>
+</head>
+
+<body>
+  <h3>Mirar la consola</h3>
+
+
+
+
+
+  <script>
+    //juego de cartas
+    //clase padre
+    class carta {
+      constructor(name, cost) {
+        this.name = name;
+        this.cost = cost;
+      }
+    }
+
+    //clase unidad
+    class unit extends carta {
+      constructor(name, cost, power, resilience) {
+        super(name, cost);
+        this.power = power;
+        this.resilience = resilience;
+      }
+      attack(target) {
+        //chequeo unidad o efecto
+        if (target instanceof unit) {
+          target.resilience -= this.power;
+          if(target.resilience <= 0){
+            console.log(target.name + " is dead... Black Ninja lives matter!")
+          }
+        } 
+        else {
+          throw new Error("Target must be a unit!");
+        }
+
+      }
+      
+    }
+      
+
+    //clase efecto
+    class effect extends carta {
+      constructor(name, cost, text, stat, magnitude) {
+        super(name, cost);
+        this.text = text;
+        this.stat = stat;
+        this.magnitude = magnitude;
+      }
+      affect(target) {
+        if (this.stat == "power") {
+          target.power += this.magnitude;
+        }
+        else {
+          target.resilience += this.magnitude;
+        }
+      }
+    }
+
+    //instancias:
+    //instancia de ninja rojo
+    console.log("Invoca ninja rojo");
+    const ninja_rojo = new unit("Ninja Rojo", 3, 3, 4);
+    console.log(ninja_rojo);
+    //invoca algoritmo dificil
+    console.log("invoca algoritmo dificil");
+    const algoritmo_dificil = new effect ("Algoritmo Difícil", 2, "aumentar la resistencia del objetivo en 3", "resilience", 3);
+    //uso de algoritmo
+    algoritmo_dificil.affect(ninja_rojo);
+    console.log(ninja_rojo);
+    //jugador 2 entra al juego
+    console.log("jugador 2 entra e invoca a ninja negro");
+    //instancia de ninja negro
+    const ninja_negro = new unit("Ninja Negro", 4, 5, 4)
+    console.log(ninja_negro);
+    //el jugador 2 invoca efecto rechazo de promesa no controlada
+    const promesa = new effect("Rechazo de promesa no controlada", 1, "reducir la resistencia del objetivo en 2", "resilience", -2);
+    //uso sobre ninja rojo
+    promesa.affect(ninja_rojo);
+    console.log("Jugador 2 invoca rechazo de promesa no controlada");
+    console.log(ninja_rojo);
+    //jugador 1 invoca programación en pareja
+    console.log("jugador 1 invoca programación en pareja");
+    const programacion = new effect("Programacion en pareja", 3, "aumentar el poder del objetivo en 2	", "power", 2);
+    //jugador 1 usa sobre ninja rojo
+    console.log("Jugador 1 la utiliza sobre ninja rojo");
+    programacion.affect(ninja_rojo);
+    console.log(ninja_rojo);
+    //jugador 1 ataca con ninja rojo a ninja negro
+    console.log("Jugador 1 usa ninja rojo sobre ninja negro");
+    ninja_rojo.attack(ninja_negro);
+    console.log(ninja_negro);
+    
+  </script>
+</body>
+
+</html>
